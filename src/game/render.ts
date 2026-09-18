@@ -406,6 +406,77 @@ export class Renderer {
     }
   }
 
+  private drawAmbientLife(
+    ctx: CanvasRenderingContext2D,
+    world: World,
+    camX: number,
+    camY: number,
+    zoom: number,
+    w: number,
+    h: number,
+    time: number,
+  ) {
+    const x0 = Math.max(0, camX - w / zoom / 2 - 2);
+    const y0 = Math.max(0, camY - h / zoom / 2 - 2);
+    const x1 = Math.min(world.w, camX + w / zoom / 2 + 2);
+    const y1 = Math.min(world.h, camY + h / zoom / 2 + 2);
+    const night = world.timeOfDay < 0.22 || world.timeOfDay > 0.78;
+
+    // Small, deterministic creatures in the air make the world feel populated even
+    // when the simulation has no nearby units. They are seeded from the world so
+    // they never affect gameplay or save data.
+    if (!night) {
+      ctx.save();
+      ctx.lineWidth = 0.045;
+      for (let i = 0; i < 12; i++) {
+        const seed = world.seed + i * 97;
+        const baseX = x0 + hash2(i, 11, seed) * Math.max(1, x1 - x0);
+        const baseY = y0 + hash2(i, 29, seed) * Math.max(1, y1 - y0);
+        const speed = 0.55 + hash2(i, 47, seed) * 0.7;
+        const px = x0 + ((baseX + time * speed) % Math.max(1, x1 - x0));
+        const py = baseY + Math.sin(time * 1.8 + i) * 0.18;
+        const wing = Math.sin(time * 8 + i * 1.7) * 0.11;
+        ctx.strokeStyle = "rgba(30,35,28,0.55)";
+        ctx.beginPath();
+        ctx.moveTo(px - 0.18, py);
+        ctx.lineTo(px, py - wing);
+        ctx.lineTo(px + 0.18, py);
+        ctx.stroke();
+      }
+      ctx.restore();
+    } else {
+      // Fireflies appear mostly over grass/forest/swamp and gently pulse at night.
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < 28; i++) {
+        const seed = world.seed + i * 131;
+        const px = x0 + hash2(i, 71, seed) * Math.max(1, x1 - x0);
+        const py = y0 + hash2(i, 89, seed) * Math.max(1, y1 - y0);
+        const tile = world.tileAt(px | 0, py | 0);
+        if (tile !== TILE.GRASS && tile !== TILE.FOREST && tile !== TILE.SWAMP) continue;
+        const pulse = 0.18 + (Math.sin(time * (2 + hash2(i, 101, seed)) + i) + 1) * 0.16;
+        ctx.fillStyle = `rgba(220,235,150,${pulse})`;
+        ctx.fillRect(px, py, 0.09, 0.09);
+      }
+      ctx.restore();
+    }
+
+    // Warm chimney smoke gives settlements a subtle sense of activity.
+    if (!night || world.weather !== "clear") {
+      ctx.save();
+      for (const b of world.buildings) {
+        if (b.kind !== "house" && b.kind !== "barracks" && b.kind !== "temple") continue;
+        if (b.x < x0 - 1 || b.x > x1 + 1 || b.y < y0 - 1 || b.y > y1 + 1) continue;
+        const drift = Math.sin(time * 0.8 + b.x * 0.7) * 0.12;
+        const rise = (time * 0.16 + b.x * 0.03 + b.y * 0.02) % 0.8;
+        const alpha = (1 - rise / 0.8) * 0.12;
+        ctx.fillStyle = `rgba(210,210,200,${alpha})`;
+        ctx.fillRect(b.x + 0.52 + drift, b.y - 0.08 - rise, 0.12 + rise * 0.08, 0.12 + rise * 0.08);
+      }
+      ctx.restore();
+    }
+  }
+
   private drawFloats(ctx: CanvasRenderingContext2D, world: World) {
     ctx.font = "0.42px Outfit, sans-serif";
     ctx.textAlign = "center";

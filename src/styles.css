@@ -86,6 +86,14 @@
     text-transform: uppercase;
     color: var(--color-subtle);
   }
+
+  .game-title-wash {
+    background: linear-gradient(90deg, var(--color-bg) 0%, color-mix(in oklab, var(--color-bg) 82%, transparent) 46%, transparent 100%);
+  }
+
+  .game-title-vignette {
+    background: linear-gradient(0deg, var(--color-bg) 0%, transparent 42%, color-mix(in oklab, var(--color-bg) 35%, transparent) 100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

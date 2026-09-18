@@ -121,7 +121,7 @@ export function Hud({
   return (
     <div className="pointer-events-none absolute inset-0 z-10 text-fg">
       <div className="pointer-events-auto absolute left-3 top-3 right-3 flex items-start justify-between gap-3 sm:left-4 sm:right-4 sm:top-4">
-        <div className="rounded-[calc(var(--radius-md)+8px)] border border-border bg-surface/90 px-3 py-2 shadow-[var(--shadow-panel)]">
+        <div className="game-panel rounded-[calc(var(--radius-md)+8px)] px-3 py-2">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-display text-lg font-semibold leading-none">Year {hud ? Math.floor(hud.year) : 1}</span>
             <span className="font-mono text-xs tabular-nums text-muted">{clock}</span>
@@ -143,8 +143,8 @@ export function Hud({
         </div>
       </div>
 
-      <div className="pointer-events-auto absolute left-3 top-24 hidden w-[4.75rem] flex-col gap-2 sm:flex">
-        <div className="flex flex-col gap-1 rounded-[calc(var(--radius-md)+6px)] border border-border bg-surface/90 p-1.5">
+      <div className="pointer-events-auto absolute left-3 top-24 hidden w-[5rem] flex-col gap-2 sm:flex">
+        <div className="game-panel-soft flex flex-col gap-1 rounded-[calc(var(--radius-md)+6px)] p-1.5">
           {CATEGORIES.map((c) => (
             <button
               key={c.id}
@@ -159,7 +159,7 @@ export function Hud({
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-2 gap-1 rounded-[calc(var(--radius-md)+6px)] border border-border bg-surface/90 p-1.5">
+        <div className="game-panel-soft grid grid-cols-2 gap-1 rounded-[calc(var(--radius-md)+6px)] p-1.5">
           {tools.map((t) => (
             <button
               key={t.id}
@@ -212,7 +212,7 @@ export function Hud({
         </div>
       </div>
 
-      <div className="pointer-events-auto absolute bottom-3 left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-[calc(var(--radius-md)+8px)] border border-border bg-surface/90 p-1.5 sm:flex">
+      <div className="game-panel pointer-events-auto absolute bottom-3 left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-[calc(var(--radius-md)+8px)] p-1.5 sm:flex">
         <IconBtn label={paused ? "Play" : "Pause"} onClick={onPauseToggle}>
           {paused ? <Play className="size-4" /> : <Pause className="size-4" />}
         </IconBtn>
@@ -254,13 +254,13 @@ export function Hud({
         </IconBtn>
       </div>
 
-      <p className="absolute bottom-24 left-1/2 hidden -translate-x-1/2 text-xs text-subtle sm:block">{hint}</p>
+      <div className="absolute bottom-20 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-border bg-surface/65 px-3 py-1.5 text-xs text-subtle sm:flex"><span className="size-1.5 rounded-full bg-accent" /><span>{hint}</span></div>
       {savedFlash ? (
         <p className="absolute bottom-20 left-1/2 -translate-x-1/2 text-xs text-ok">World remembered</p>
       ) : null}
 
       {hud?.inspect?.unit && !possess ? (
-        <aside className="pointer-events-auto absolute right-3 top-24 w-[17rem] max-w-[calc(100%-1.5rem)] rounded-[calc(var(--radius-md)+10px)] border border-border bg-surface/92 p-4 shadow-[var(--shadow-panel)]">
+        <aside className="game-panel pointer-events-auto absolute right-3 top-24 w-[17rem] max-w-[calc(100%-1.5rem)] rounded-[calc(var(--radius-md)+10px)] p-4">
           <p className="text-xs uppercase tracking-[0.18em] text-subtle">{hud.inspect.unit.race}</p>
           <h2 className="font-display text-2xl font-semibold leading-tight">{hud.inspect.unit.name}</h2>
           <p className="mt-1 text-sm text-muted">
@@ -281,7 +281,7 @@ export function Hud({
       ) : null}
 
       {hud?.inspect?.kind === "tile" && !hud.inspect.unit && !possess ? (
-        <aside className="pointer-events-auto absolute right-3 top-24 w-[15rem] rounded-[calc(var(--radius-md)+10px)] border border-border bg-surface/92 p-4">
+        <aside className="game-panel pointer-events-auto absolute right-3 top-24 w-[15rem] rounded-[calc(var(--radius-md)+10px)] p-4">
           <p className="text-xs uppercase tracking-[0.18em] text-subtle">Land</p>
           <h2 className="font-display text-2xl font-semibold capitalize">{hud.inspect.biome}</h2>
           <p className="mt-1 font-mono text-xs text-muted">
@@ -293,7 +293,7 @@ export function Hud({
       {hud?.kingdoms.length && !possess ? (
         <div className="pointer-events-auto absolute right-3 bottom-24 hidden w-[17rem] flex-col gap-1 sm:flex">
           {hud.kingdoms.slice(0, 4).map((k) => (
-            <div key={k.id} className="rounded-[var(--radius-md)] border border-border bg-surface/90 px-3 py-2">
+            <div key={k.id} className="game-panel-soft rounded-[var(--radius-md)] px-3 py-2">
               <div className="flex items-center justify-between gap-2">
                 <span className="flex items-center gap-2 text-sm">
                   <span className="size-2.5 rounded-full" style={{ background: k.color }} />
@@ -322,7 +322,7 @@ export function Hud({
       ) : null}
 
       {possess ? (
-        <div className="pointer-events-auto absolute left-1/2 top-24 w-[min(22rem,calc(100%-1.5rem))] -translate-x-1/2 rounded-[calc(var(--radius-md)+10px)] border border-border bg-surface/92 px-4 py-3">
+        <div className="game-panel pointer-events-auto absolute left-1/2 top-24 w-[min(22rem,calc(100%-1.5rem))] -translate-x-1/2 rounded-[calc(var(--radius-md)+10px)] px-4 py-3">
           <div className="flex items-baseline justify-between">
             <h2 className="font-display text-xl font-semibold">{possess.name}</h2>
             <span className="text-xs uppercase tracking-[0.16em] text-subtle">Possessed</span>
@@ -336,7 +336,7 @@ export function Hud({
 
       {menu ? (
         <div className="pointer-events-auto absolute inset-0 flex items-center justify-center bg-bg/70">
-          <div className="w-[min(22rem,calc(100%-2rem))] rounded-[var(--radius-xl)] border border-border bg-surface p-6 shadow-[var(--shadow-panel)]">
+          <div className="game-panel w-[min(22rem,calc(100%-2rem))] rounded-[var(--radius-xl)] p-6">
             <h2 className="font-display text-3xl font-semibold">Paused</h2>
             <p className="mt-1 text-sm text-muted">The world holds its breath.</p>
             <div className="mt-5 flex flex-col gap-2">

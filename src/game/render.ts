@@ -123,6 +123,7 @@ export class Renderer {
     ctx.restore();
 
     this.drawNight(ctx, world, camX, camY, zoom, w, h, shakeX, shakeY);
+    this.drawAtmosphere(ctx, world, w, h);
     if (world.flash > 0) {
       ctx.fillStyle = `rgba(230,240,255,${world.flash * 0.45})`;
       ctx.fillRect(0, 0, w, h);
@@ -423,6 +424,21 @@ export class Renderer {
     ctx.arc(x, y, Math.max(0.4, r), 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
+  }
+
+  private drawAtmosphere(ctx: CanvasRenderingContext2D, world: World, w: number, h: number) {
+    const tod = world.timeOfDay;
+    const edge = tod < 0.22 || tod > 0.78 ? 0.38 : 0.22;
+    const g = ctx.createRadialGradient(w * 0.5, h * 0.46, Math.min(w, h) * 0.12, w * 0.5, h * 0.46, Math.max(w, h) * 0.72);
+    g.addColorStop(0, "rgba(0,0,0,0)");
+    g.addColorStop(0.68, "rgba(0,0,0,0.035)");
+    g.addColorStop(1, `rgba(0,0,0,${edge})`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.strokeStyle = "rgba(236,232,225,0.08)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
   }
 
   private drawNight(

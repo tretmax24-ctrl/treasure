@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "PRIMORDIA",
+      "hasCanvas": true,
+      "bodyTextLen": 252,
+      "bodyTextHash": "38ccb693977fb1c0e8736de2cec661fb123e2bd0af084d9ac7bd53c3cd71f8ab",
+      "bodyTextPrefix": "GOD SANDBOX PRIMORDIA Shape continents. Found kingdoms. Possess ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "PRIMORDIA",
+      "hasCanvas": true,
+      "bodyTextLen": 252,
+      "bodyTextHash": "38ccb693977fb1c0e8736de2cec661fb123e2bd0af084d9ac7bd53c3cd71f8ab",
+      "bodyTextPrefix": "GOD SANDBOX PRIMORDIA Shape continents. Found kingdoms. Possess ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowRight, Compass, Crown, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/game/store";
 
@@ -21,56 +22,88 @@ export function TitleScreen({
       <img
         src="/splash.jpg"
         alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-80"
+        className="absolute inset-0 h-full w-full object-cover opacity-55"
         crossOrigin="anonymous"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-bg/95 via-bg/70 to-bg/30 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-bg/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-bg)_0%,color-mix(in_oklab,var(--color-bg)_82%,transparent)_46%,transparent_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(0deg,var(--color-bg)_0%,transparent_42%,color-mix(in_oklab,var(--color-bg)_35%,transparent)_100%)] pointer-events-none" />
 
-      <div className="relative flex h-full max-w-xl flex-col justify-end gap-6 px-6 pb-16 pt-20 sm:justify-center sm:px-12 sm:pb-0">
-        <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted">God sandbox</p>
-        <h1 className="font-display text-5xl font-semibold leading-none tracking-tight text-fg sm:text-7xl">
-          PRIMORDIA
-        </h1>
-        <p className="max-w-md text-base leading-relaxed text-muted">
-          Shape continents. Found kingdoms. Possess any soul and walk the world you made.
-        </p>
+      <div className="relative flex h-full flex-col justify-between px-5 py-6 sm:px-10 sm:py-8">
+        <header className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-full border border-border-strong bg-surface/80 text-accent">
+              <Crown className="size-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-subtle">Primordia</p>
+              <p className="text-xs text-muted">Worlds are meant to be shaped.</p>
+            </div>
+          </div>
+          <div className="hidden items-center gap-2 rounded-full border border-border bg-surface/65 px-3 py-2 text-[10px] uppercase tracking-[0.18em] text-subtle sm:flex">
+            <Sparkles className="size-3.5" />
+            Living world simulation
+          </div>
+        </header>
 
-        <label className="flex max-w-sm flex-col gap-2">
-          <span className="text-xs font-medium uppercase tracking-[0.18em] text-subtle">Seed</span>
-          <input
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
-            placeholder="leave blank for chance"
-            className="h-11 rounded-[var(--radius-md)] border border-border bg-elevated px-3 text-sm text-fg outline-none placeholder:text-subtle focus:border-border-strong"
-          />
-        </label>
+        <main className="w-full max-w-2xl pb-6 sm:pb-10">
+          <p className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.3em] text-muted">
+            <span className="h-px w-8 bg-border-strong" />
+            God sandbox
+          </p>
+          <h1 className="font-display text-6xl font-semibold leading-[0.82] tracking-tight text-fg sm:text-8xl">
+            PRIMORDIA
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+            Shape continents. Raise civilizations. Rewrite fate. Then step inside the world
+            and experience the consequences as a living soul.
+          </p>
 
-        <div className="flex max-w-sm flex-col gap-2">
-          <Button
-            size="lg"
-            className="w-full"
-            data-qa="awaken"
-            onClick={() => onAwaken(seed)}
-          >
-            Awaken a world
-          </Button>
-          <Button size="lg" variant="secondary" className="w-full" onClick={() => onIsles(seed)}>
-            Scattered isles
-          </Button>
-          <Button size="lg" variant="secondary" className="w-full" onClick={() => onBlank(seed)}>
-            Empty canvas
-          </Button>
-          {hasSave ? (
-            <Button size="lg" variant="ghost" className="w-full" onClick={onContinue}>
-              Continue
+          <div className="mt-7 flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-end">
+            <label className="flex min-w-0 flex-1 flex-col gap-2">
+              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-subtle">World seed</span>
+              <div className="flex items-center gap-2 rounded-[var(--radius-md)] border border-border bg-surface/85 px-3 focus-within:border-border-strong">
+                <Compass className="size-4 shrink-0 text-subtle" />
+                <input
+                  value={seed}
+                  onChange={(e) => setSeed(e.target.value)}
+                  placeholder="Random world"
+                  className="h-11 min-w-0 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-subtle"
+                />
+              </div>
+            </label>
+            <Button size="lg" className="h-11 sm:min-w-44" data-qa="awaken" onClick={() => onAwaken(seed)}>
+              Awaken
+              <ArrowRight className="size-4" />
             </Button>
-          ) : null}
-        </div>
+          </div>
 
-        <p className="max-w-md text-xs leading-relaxed text-subtle">
-          Drag to paint. Scroll to zoom. Double-tap a soul to possess. WASD to walk. F for a gift of the flesh.
-        </p>
+          <div className="mt-3 grid max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3">
+            <Button size="lg" variant="secondary" className="w-full" onClick={() => onIsles(seed)}>
+              Scattered isles
+            </Button>
+            <Button size="lg" variant="secondary" className="w-full" onClick={() => onBlank(seed)}>
+              Empty canvas
+            </Button>
+            {hasSave ? (
+              <Button size="lg" variant="ghost" className="col-span-2 w-full sm:col-span-1" onClick={onContinue}>
+                Continue world
+              </Button>
+            ) : null}
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[10px] uppercase tracking-[0.16em] text-subtle">
+            <span>Drag · paint</span>
+            <span>Scroll · zoom</span>
+            <span>Double tap · possess</span>
+            <span>WASD · walk</span>
+            <span>Space · act</span>
+          </div>
+        </main>
+
+        <footer className="flex items-end justify-between gap-4 text-[10px] uppercase tracking-[0.16em] text-subtle">
+          <span>Every world is seeded. Every life is temporary.</span>
+          <span className="hidden sm:block">Build your myth.</span>
+        </footer>
       </div>
     </div>
   );
